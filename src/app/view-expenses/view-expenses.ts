@@ -59,7 +59,7 @@ export class ViewExpenses implements OnInit {
 
     getGroupExpenses() {
         this.loading.set(true);
-        this.http.get(`http://localhost:3000/getGroupData?groupId=${this.groupId}`)
+        this.http.get(`https://split-api-chi.vercel.app/getGroupData?groupId=${this.groupId}`)
             .subscribe((data: any) => {
                 this.loading.set(false);
                 this.expenseGroup.set(`Expenses for: ${data?.groupName}`);
@@ -88,7 +88,7 @@ export class ViewExpenses implements OnInit {
         expense.splitAmong = this.selectedMembers(splitAmongBooleans);
         this.loading.set(true);
         this.http.put(
-            `http://localhost:3000/edit/expense?groupId=${this.groupId}`,
+            `https://split-api-chi.vercel.app/edit/expense?groupId=${this.groupId}`,
             expense
         ).subscribe(() => {
             this.loading.set(false);
@@ -102,7 +102,7 @@ export class ViewExpenses implements OnInit {
         this.loading.set(true);
         const expense =
             this.expensesArray.at(index).value;
-        this.http.delete(`http://localhost:3000/delete/expense?groupId=${this.groupId}&expenseId=${expense.expenseId}`)
+        this.http.delete(`https://split-api-chi.vercel.app/delete/expense?groupId=${this.groupId}&expenseId=${expense.expenseId}`)
             .subscribe(() => {
                 this.loading.set(false);
                 this.getGroupExpenses()
