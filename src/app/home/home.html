@@ -1,0 +1,23 @@
+@if(loading()){
+<div class="card flex justify-center">
+  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }" />
+</div>
+}
+<div class="grid">
+  <div class="col-12 col-offset-1">
+    <h1>Welcome to Divide-And-Pay</h1>
+    <p>Manage and split expenses easily.</p>
+    <div class="grid align-items-center justify-content-start">
+      <form [formGroup]="groupForm" (ngSubmit)="searchGroup()">
+        <div class="col-12 md:col-10">
+          <input pInputText formControlName="groupId" type="text" pSize="large" placeholder="Enter the groupId"
+            class="w-full" fluid />
+        </div>
+        <div class="col-12 md:col-10">
+          <p-button label="Search Group" [raised]="true" severity="success" type="submit" size="small" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

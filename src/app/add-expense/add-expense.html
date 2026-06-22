@@ -1,0 +1,60 @@
+@if(loading()){
+<div class="card flex justify-center">
+  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }" />
+</div>
+}
+<div class="grid add-expense">
+    <p-toast />
+    <div class="col-10">
+        <p-card [header]="headerText()">
+            <div class="m-0">
+                <form [formGroup]="addExpenseForm" (ngSubmit)="addExpense()">
+                    <div class="grid align-items-center justify-content-start">
+                        <div class="col-12 md:col-3">
+                            <p-select [options]="members" formControlName="paidBy" placeholder="Who Paid?" class="w-full">
+                            </p-select>
+                        </div>
+                        <div class="col-12 md:col-3">
+                            <input pInputText formControlName="expenseName" type="text" pSize="large"
+                                placeholder="Expense Name" class="w-full" fluid />
+                        </div>
+                        <div class="col-12 md:col-3">
+                            <p-inputnumber formControlName="amount" mode="currency" inputId="currency-india"
+                                currency="INR" currencyDisplay="code" locale="en-IN" />
+                        </div>
+                        <div class="col-12 md:col-3">
+                            <p-button label="Add Expense" [raised]="true" severity="success" type="submit" size="small"/>
+                        </div>
+                    </div>
+                    <div class="grid align-items-center justify-content-start">
+                        <div class="col-3">
+                                <a [routerLink]="['/expenses', groupId]">View/Edit Expenses</a>
+                        </div>
+                    </div>
+                    <div class="grid align-items-center justify-content-start">
+                        <div class="col-3">
+                            <p>Between:</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div formArrayName="splitAmong" class="flex flex-wrap gap-3">
+                            @for (member of members || []; track $index) {
+                            <p-checkbox inputId="member{{ $index }}" [formControlName]="$index" binary="true" />
+                            <label for="member{{ $index }}" class="ml-2"> {{ member }} </label>
+                            }
+                        </div>
+                    </div>
+                    <div class="grid align-items-center justify-content-start">
+                        <p>Summary:</p>
+                        @for(settlement of settlementArray; track $index) {
+                            <div class="col-12 md:col-12">
+                                <p>{{settlement}}</p>
+                            </div>                           
+                        }
+                    </div>
+                </form>
+            </div>
+        </p-card>
+    </div>
+</div>

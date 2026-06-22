@@ -1,0 +1,42 @@
+<div class="grid create-expense">
+    <p-toast />
+    <div class="col-10">
+        <p-card header="Let's create a group!">
+            <br/>
+            <div class="m-0">
+                <form [formGroup]="expenseForm" (ngSubmit)="createGroup()">
+                    <div class="grid justify-content-start">
+                        <div class="col-3">
+                            <p-floatlabel variant="on" class="w-full">
+                                <input class="w-full" pInputText id="on_label" formControlName="groupName"
+                                    autocomplete="off" />
+                                <label for="on_label">Group Name</label>
+                            </p-floatlabel>
+                        </div>
+                        <div class="col-3">
+                            <p-floatlabel variant="on" class="w-full">
+                                <input class="w-full" formControlName="memberName" pInputText id="member_input" autocomplete="off" />
+                                <label for="member_input">Member Name</label>
+                            </p-floatlabel>
+                        </div>
+                        <div class="col-6">
+                            <div class="flex gap-3">
+                                <p-button label="Add Member" [raised]="true" severity="secondary"
+                                    (click)="addMember()" />
+                                <p-button label="Create Group" [raised]="true" severity="secondary" disabled="{{groupName && members.length<=0}}" (click)="createGroup()"/>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card flex items-center gap-2 flex-wrap">
+                                @for (member of members.controls; track $index) {
+                                <p-chip label="{{ member.value}}" [removable]="true"
+                                    (onRemove)="removeMember($index)" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </p-card>
+    </div>
+</div>

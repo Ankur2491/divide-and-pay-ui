@@ -1,0 +1,61 @@
+/* Responsive tweaks scoped to the Create Group view */
+.create-expense {
+	box-sizing: border-box;
+}
+.create-expense .col-3,
+.create-expense .col-6,
+.create-expense .col-10,
+.create-expense .col-12 {
+	box-sizing: border-box;
+	padding: 0.25rem;
+}
+
+/* Make form controls and buttons fluid on small screens */
+@media (max-width: 640px) {
+    .create-expense.create-expense .col-3,
+    .create-expense.create-expense .col-6,
+    .create-expense.create-expense .col-10,
+    .create-expense.create-expense .col-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .create-expense.create-expense .flex {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .create-expense.create-expense p-button,
+    .create-expense.create-expense p-button ::ng-deep button {
+        width: 100%;
+        display: block;
+    }
+
+    .create-expense.create-expense p-floatlabel,
+    .create-expense.create-expense .w-full {
+        width: 100%;
+    }
+
+    .create-expense.create-expense .card.flex {
+        align-items: flex-start;
+    }
+
+    .create-expense.create-expense p-chip {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Remove grid offset that shifts the card on small screens */
+    .create-expense.create-expense .col-offset-1 {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* Minor spacing improvements for medium screens */
+@media (min-width: 641px) and (max-width: 1024px) {
+	.create-expense .col-3 { flex: 0 0 50%; max-width: 50%; }
+	.create-expense .col-6 { flex: 0 0 100%; max-width: 100%; }
+}

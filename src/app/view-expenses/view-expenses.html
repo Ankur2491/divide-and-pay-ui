@@ -1,0 +1,151 @@
+@if(loading()){
+<div class="card flex justify-center">
+  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }" />
+</div>
+}
+<div class="grid">
+        <p-toast />
+    <div class="col-12 lg:col-10 lg:col-offset-1">
+
+        <p-card [header]="expenseGroup()">
+            <div style="margin-left: 20px;">
+                <p-button label="Go to Add Expense" (onClick)="addExp()"></p-button>
+            </div>
+            <hr/>
+
+            <form [formGroup]="expensesForm">
+
+                <div formArrayName="expenses">
+
+                    @for (expense of expensesArray.controls; track $index; let expenseIndex = $index; let isLast = $last) {
+
+                    <div class="mb-4">
+
+                        <p-card>
+
+                            <div [formGroupName]="expenseIndex">
+
+                                <!-- Expense Details -->
+                                <div class="grid">
+
+                                    <div class="col-12 md:col-3">
+                                        <p-select
+                                            [options]="members"
+                                            formControlName="paidBy"
+                                            placeholder="Who Paid?"
+                                            class="w-full"
+                                            [disabled]="editingIndex() !== $index">
+                                        </p-select>
+                                    </div>
+
+                                    <div class="col-12 md:col-3">
+                                        <input
+                                            pInputText
+                                            formControlName="expenseName"
+                                            placeholder="Expense Name"
+                                            class="w-full"
+                                            [readonly]="editingIndex() !== $index">
+                                    </div>
+
+                                    <div class="col-12 md:col-3">
+                                        <p-inputnumber
+                                            formControlName="amount"
+                                            mode="currency"
+                                            currency="INR"
+                                            currencyDisplay="code"
+                                            locale="en-IN"
+                                            [disabled]="editingIndex() !== $index">
+                                        </p-inputnumber>
+                                    </div>
+
+                                    <div class="col-12 md:col-3">
+                                        @if(editingIndex() !== $index) {
+                                            <p-button
+                                                label="Edit"
+                                                severity="info"
+                                                styleClass="w-full"
+                                                (onClick)="editExpense($index)">
+                                            </p-button>
+                                        } @else {
+                                            <p-button
+                                                label="Save"
+                                                severity="success"
+                                                icon="pi pi-check"
+                                                styleClass="w-full"
+                                                (onClick)="saveExpense($index)">
+                                            </p-button>
+                                        }
+                                    </div>
+                                    <div class="col-12 md:col-3">
+                                        <p-button
+                                            label="Delete"
+                                            icon="pi pi-trash"
+                                            styleClass="w-full"
+                                            severity="danger"
+                                            (onClick)="deleteExpense($index)">
+                                        </p-button>
+                                            
+                                    </div>
+
+                                </div>
+
+                                <!-- Split Among -->
+                                <div class="grid mt-3">
+
+                                    <div class="col-12">
+                                        <h4 class="m-0">Split Among:</h4>
+                                    </div>
+
+                                    <div class="col-12">
+
+                                        <div
+                                            formArrayName="splitAmong"
+                                            class="flex flex-wrap gap-3">
+
+                                            @for(member of members; track $index; let memberIndex = $index) {
+
+                                            <div
+                                                class="flex align-items-center gap-2">
+
+                                                <p-checkbox
+                                                    [inputId]="'member_' + expenseIndex + '_' + memberIndex"
+                                                    [formControlName]="memberIndex"
+                                                    binary="true"
+                                                    [disabled]="editingIndex() !== expenseIndex">
+                                                </p-checkbox>
+
+                                                <label
+                                                    [for]="'member_' + expenseIndex + '_' + memberIndex">
+                                                    {{ member }}
+                                                </label>
+
+                                            </div>
+
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </p-card>
+
+                    </div>
+                    @if(!isLast) {
+                    <hr/>
+                    }
+
+                    }
+
+                </div>
+
+            </form>
+
+        </p-card>
+
+    </div>
+</div>
