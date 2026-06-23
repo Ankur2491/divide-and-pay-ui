@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -18,7 +18,7 @@ export class Home {
   private router =inject(Router);
   loading = signal<boolean>(false);
   groupForm = this.fb.group({
-    groupId: ['']
+    groupId: ['', Validators.required]
   })
   groupId: string = 'a8811a7e-eea5-4c92-b0bb-e9cf5d2d6955';
   getSummary() {

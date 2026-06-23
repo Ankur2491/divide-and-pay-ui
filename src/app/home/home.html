@@ -15,7 +15,7 @@
             class="w-full" fluid />
         </div>
         <div class="col-12 md:col-10">
-          <p-button label="Search Group" [raised]="true" severity="success" type="submit" size="small" />
+          <p-button label="Search Group" [raised]="true" severity="success" type="submit" size="small" [disabled]="groupForm.invalid"/>
         </div>
       </form>
     </div>

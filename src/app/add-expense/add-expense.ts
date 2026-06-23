@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, Input, OnInit, signal, effect } from '@angular/core';
+import { Component, inject, Input, OnInit, signal, effect, DOCUMENT, Inject } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -32,6 +32,34 @@ export class AddExpense implements OnInit {
   addExpenseForm: any;
   groupId: any;
   settlementArray: any[] = [];
+
+  constructor(@Inject(DOCUMENT) private document: Document){}
+
+  async shareCurrentUrl(): Promise<void> {
+    // Check if the browser supports the native Web Share API
+    if (this.document.defaultView?.navigator?.share) {
+      try {
+        await this.document.defaultView.navigator.share({
+          title: this.document.title,
+          text: 'Check out this group!',
+          url: this.document.location.href // Grabs the current URL dynamically
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      // Fallback mechanism if the browser doesn't support native sharing
+      this.fallbackCopyToClipboard();
+    }
+  }
+
+  private fallbackCopyToClipboard(): void {
+    const currentUrl = this.document.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      alert('Sharing not supported on this browser. Link copied to clipboard instead!');
+    });
+  }
+
   fetchGroupData(groupId: string) {
     this.loading.set(true);
     this.http.get(`https://split-api-chi.vercel.app/getGroupData?groupId=${groupId}`).subscribe(groupObj => {

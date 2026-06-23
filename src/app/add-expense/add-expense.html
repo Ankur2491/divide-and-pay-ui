@@ -24,12 +24,15 @@
                                 currency="INR" currencyDisplay="code" locale="en-IN" />
                         </div>
                         <div class="col-12 md:col-3">
-                            <p-button label="Add Expense" [raised]="true" severity="success" type="submit" size="small"/>
+                            <p-button label="Add Expense" [raised]="true" severity="success" type="submit" size="small" [disabled]="addExpenseForm.invalid"/>
                         </div>
                     </div>
                     <div class="grid align-items-center justify-content-start">
-                        <div class="col-3">
+                        <div class="col-12">
                                 <a [routerLink]="['/expenses', groupId]">View/Edit Expenses</a>
+                        </div>
+                        <div class="col-12">
+                            <p-button icon="pi pi-share-alt" (onClick)="shareCurrentUrl()"/>
                         </div>
                     </div>
                     <div class="grid align-items-center justify-content-start">
