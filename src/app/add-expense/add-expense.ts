@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, Input, OnInit, signal, effect, DOCUMENT, Inject } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -15,8 +16,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-expense',
-  imports: [CardModule, SelectModule, ReactiveFormsModule, FloatLabelModule, InputNumberModule, CheckboxModule, ButtonModule, ToastModule, RouterLink, ProgressSpinnerModule],
-  providers: [MessageService],
+  imports: [CardModule, SelectModule, ReactiveFormsModule, FloatLabelModule, InputNumberModule, CheckboxModule, ButtonModule, ToastModule, RouterLink, ProgressSpinnerModule, ConfirmDialogModule],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './add-expense.html',
   styleUrl: './add-expense.css',
 })
@@ -29,6 +30,7 @@ export class AddExpense implements OnInit {
   public groupObject = signal<any>(null);
   public headerText = signal<string>('');
   loading = signal<boolean>(false);
+  private confirmationService = inject(ConfirmationService);
   addExpenseForm: any;
   groupId: any;
   settlementArray: any[] = [];
@@ -180,5 +182,34 @@ export class AddExpense implements OnInit {
       }
     }
     this.settlementArray = finalSettlementArray
+  }
+
+  deleteGroup(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: `Are you sure you want to delete the group "${this.groupObject()?.groupName}"?`,
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger'
+      },
+      accept: () => {
+        this.http.delete(`https://split-api-chi.vercel.app/delete/group?groupId=${this.groupId}`).subscribe(res => {
+          this.messageService.add({ severity: 'error', summary: 'Deleted', detail: `"${this.groupObject()?.groupName}" is deleted!` });
+          this.router.navigate(['/home'])
+        })
+      },
+      reject: () => {
+
+      }
+    });
   }
 }

@@ -6,6 +6,7 @@
 }
 <div class="grid add-expense">
     <p-toast />
+    <p-confirmdialog />
     <div class="col-10">
         <p-card [header]="headerText()">
             <div class="m-0">
@@ -30,6 +31,9 @@
                     <div class="grid align-items-center justify-content-start">
                         <div class="col-12">
                                 <a [routerLink]="['/expenses', groupId]">View/Edit Expenses</a>
+                        </div>
+                        <div class="col-12">
+                            <p-button label="Delete Group" [raised]="true" severity="danger" (click)="deleteGroup($event)" size="small"/>
                         </div>
                         <div class="col-12">
                             <p-button icon="pi pi-share-alt" (onClick)="shareCurrentUrl()"/>
